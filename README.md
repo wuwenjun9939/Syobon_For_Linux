@@ -37,6 +37,9 @@ sudo apt-get install libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev libx11-dev
 make
 ./syobon
 ```
+
+### 3、注意事项
+- 此程序不支持最大化处理（会直接黑屏）
 ## 操作说明：
 - **方向键**：移动 / 蹲下（按上键也可以跳）
 - **Z键**：跳跃
