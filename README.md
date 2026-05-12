@@ -1,1 +1,34 @@
-# Syobon_For_Linux
+# Syobon Action (しょぼんのアクション) For Linux
+
+![Platform](https://img.shields.io/badge/platform-Linux-orange.svg)
+![Language](https://img.shields.io/badge/language-C++-blue.svg)
+
+这是一个为 Linux 系统深度适配的《猫里奥》（Syobon Action）源码版。
+
+本项目基于日本开发者 **Chikuwa (ちくわ)** 的原始代码，针对 Linux 环境下的文件系统特性、音频后端以及输入映射进行了全方位的修复。
+
+## 🛠️ 针对 Linux 的修复项 (Fixes)
+
+作为一名“重度 Windows 患者”，在 Linux 下编译此项目时我遇到了不少令人脑壳痛的问题，现已全部解决：
+
+- **大小写敏感修复 (Case-Sensitivity)**：
+  - Linux 的 ext4 等文件系统对大小写极其敏感。
+  - 修复了代码中 `res/Player.png` 无法加载 `res/player.png` 的问题。
+  - 统一了 `res/`, `SE/`, `BGM/` 文件夹内所有资源的文件名。
+- **输入系统适配 (Input Mapping)**：
+  - 修复了 `DxLibForLinux` 下 `GetJoypadInputState` 无法直接读取键盘方向键的 Bug。
+  - 通过 `CheckHitKey` 手动同步状态，确保了原汁原味的按键体验。
+- **音频系统优化 (Audio Backend)**：
+  - 移除了 Linux 下不兼容的内存预解压设置 (`DX_SOUNDDATATYPE_MEMPRESS`)。
+  - 统一了音频路径解析，修复了 BGM 无法播放的问题。
+
+## 🚀 如何编译 (How to Build)
+
+### 1. 安装依赖 (Dependencies)
+
+确保你的系统已安装 `SDL2` 相关开发库（以 Ubuntu 为例）：
+
+```bash
+sudo apt-get update
+sudo apt-get install libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev libx11-dev
+```
