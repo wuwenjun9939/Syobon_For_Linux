@@ -118,11 +118,11 @@
 
 // Ｏｇｇ Ｖｏｒｂｉｓ データを使用しない方は次のコメントをはずしてください
 // ※DxUseCLib.lib も再コンパイルする必要があります
-//#define DX_NON_OGGVORBIS
+////#define DX_NON_OGGVORBIS
 
 // Ｏｇｇ Ｔｈｅｏｒａ データを使用しない方は次のコメントをはずしてください
 // ※DxUseCLib.lib も再コンパイルする必要があります
-//#define DX_NON_OGGTHEORA
+////#define DX_NON_OGGTHEORA
 
 // Opus データを使用しない方は次のコメントをはずしてください
 // ※DxUseCLib.lib も再コンパイルする必要があります
@@ -174,7 +174,7 @@
 //#define DX_NON_FONT
 
 // サウンド再生機能( ソフトウエアサウンド、MIDI含む )を無効にする場合は次のコメントを外して下さい
-//#define DX_NON_SOUND
+////#define DX_NON_SOUND
 
 // 入力機能を無効にする場合は次のコメントを外して下さい
 //#define DX_NON_INPUT
@@ -274,8 +274,8 @@
 #define DX_NON_PNGREAD
 #define DX_NON_TIFFREAD
 #define DX_NON_BEEP
-#define DX_NON_OGGVORBIS
-#define DX_NON_OGGTHEORA
+//#define DX_NON_OGGVORBIS
+//#define DX_NON_OGGTHEORA
 #define DX_NON_OPUS
 #define DX_NON_MODEL
 #define DX_NON_SHADERCODE_BINARY
@@ -287,7 +287,7 @@
 		#define DX_NON_GRAPHICS
 	#endif
 	#ifndef DX_NON_SOUND
-		#define DX_NON_SOUND
+		//#define DX_NON_SOUND
 	#endif
 	#ifndef DX_NON_INPUT
 		#define DX_NON_INPUT
@@ -344,10 +344,10 @@
 		#define DX_NON_OPUS
 	#endif
 	#ifndef DX_NON_OGGVORBIS
-		#define DX_NON_OGGVORBIS
+		//#define DX_NON_OGGVORBIS
 	#endif
 	#ifndef DX_NON_OGGTHEORA
-		#define DX_NON_OGGTHEORA
+		//#define DX_NON_OGGTHEORA
 	#endif
 	#ifndef DX_NON_ACM
 		#define DX_NON_ACM
@@ -398,7 +398,7 @@
 
 #ifdef DX_NON_MOVIE
 	#ifndef DX_NON_OGGTHEORA
-		#define DX_NON_OGGTHEORA
+		//#define DX_NON_OGGTHEORA
 	#endif
 	#ifndef DX_NON_MEDIA_FOUNDATION
 		#define DX_NON_MEDIA_FOUNDATION
@@ -422,7 +422,7 @@
 
 #ifdef DX_NON_OGGVORBIS
 	#ifndef DX_NON_OGGTHEORA
-		#define DX_NON_OGGTHEORA
+		//#define DX_NON_OGGTHEORA
 	#endif
 	#ifndef DX_NON_OPUS
 		#define DX_NON_OPUS

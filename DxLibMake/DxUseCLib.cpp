@@ -70,6 +70,7 @@ using namespace DxLib ;
 	typedef unsigned char boolean;
 	#endif	
 	extern "C"
+#define HAVE_BOOLEAN
 	{
 	#include "jpeglib.h"
 	}

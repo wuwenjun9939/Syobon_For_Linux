@@ -5,7 +5,7 @@ CC = g++
 TARGET = syobon
 
 # 源代码
-SRCS = main.cpp loadg.cpp
+SRCS = main.cpp loadg.cpp DxLibMake/Linux/DxShaderCodeBin_Base_Linux.o DxLibMake/Linux/DxShaderCodeBin_Model_Linux.o DxLibMake/Linux/DxShaderCodeBin_Base3D_Linux.o DxLibMake/Linux/DxShaderCodeBin_Filter_Linux.o DxLibMake/Linux/DxShaderCodeBin_RgbaMix_Linux.o
 
 # 静态库路径
 STATIC_LIB = ./DxLibMake/libDxLib.a
