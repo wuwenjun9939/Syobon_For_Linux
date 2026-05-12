@@ -32,3 +32,19 @@
 sudo apt-get update
 sudo apt-get install libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev libx11-dev
 ```
+### 2、编译并运行
+```bash
+make
+./syobon
+```
+## 操作说明：
+- **方向键**：移动 / 蹲下（按上键也可以跳）
+- **Z键**：跳跃
+- **O键**：自杀重来（如果你被困在里面）
+- **F1**：返回标题界面
+### 📜 致谢 (Credits)
+- Original Author: Chikuwa (ちくわ)
+- Library: [DxLibForLinux](https://github.com/dragoon2014/dxlib-for-linux)
+- Fixes: [wuwenjun9939](https://github.com/wuwenjun9939)
+
+注：本项目仅供学习与交流使用，请勿用于商业用途。
