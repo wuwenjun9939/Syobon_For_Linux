@@ -41,6 +41,9 @@ make
 ## ⚠️ 已知缺陷 (Known Issues)
 
 - **窗口最大化黑屏**：由于 DxLib 底层渲染限制，点击窗口最大化会导致渲染上下文丢失（黑屏）。目前建议在窗口模式下运行，请勿尝试拉伸窗口。
+
+### 小插曲
+- **Trivia**: The original source contained `Microsoft AppLocale`, a legacy tool used to fix encoding issues on Windows. This is no longer needed in this Linux version as all assets have been case-corrected and path-fixed.
 ## 操作说明：
 - **方向键**：移动 / 蹲下（按上键也可以跳）
 - **Z键**：跳跃
