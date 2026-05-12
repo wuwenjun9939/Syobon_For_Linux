@@ -1,0 +1,11 @@
+# 排除 Windows 二进制和资源以外的杂质
+catmari.exe
+
+# 排除 Linux 编译结果
+syobon
+*.o
+
+# 排除开发工具产生的临时文件
+.vscode/
+.idea/
+*.swp
