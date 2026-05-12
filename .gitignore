@@ -9,3 +9,4 @@ syobon
 .vscode/
 .idea/
 *.swp
+*.log
