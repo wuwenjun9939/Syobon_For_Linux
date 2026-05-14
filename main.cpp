@@ -8,6 +8,9 @@ void loadg();
 #include <string>
 using namespace std;
 
+// 音频系统修复
+#include "audio_fix.h"
+
 
 //プログラム中
 //main-10
@@ -214,7 +217,7 @@ int fma=0,fmb=0;
 //強制スクロール
 int kscroll=0;
 //画面サイズ(ファミコンサイズ×2)(256-224)
-int fxmax=48000,fymax=42000;
+int fxmax=80000,fymax=60000;
 
 
 
@@ -249,7 +252,7 @@ ChangeWindowMode(TRUE ) ;
 //タイトルの変更
 SetMainWindowText( "しょぼんのアクション" ) ;
 //applog無効
-SetOutApplicationLogValidFlag(false);
+// SetOutApplicationLogValidFlag(false);
 
 
 // ＤＸライブラリ初期化処理(エラーが起きたら直ちに終了)
@@ -268,13 +271,12 @@ loadg();
 //フォント
 SetFontSize(16) ;
 SetFontThickness(4) ;
-
-//ループ
-//for (maint=0;maint<=2;maint++){
+// 2. 进入主循环，主循环里只跑“每一帧”需要的逻辑
 while( ProcessMessage() == 0 && CheckHitKey( KEY_INPUT_ESCAPE ) == 0){
+    // 确保这里不再重复调用初始化！
+    Mainprogram(); // 对应原版中处理移动、绘图的部分
 
-maint=0;Mainprogram();
-if (maint==3)break;
+    if (maint == 3) break;
 }
 
 
@@ -1241,11 +1243,11 @@ if (rand(4)==0)stagecolor=rand(4);
 
 
 
-StopSoundMem(oto[0]);
+//StopSoundMem(oto[0]);
 
 
-//メインBGM
-PlaySoundMem(oto[0],DX_PLAYTYPE_LOOP) ;
+//メインBGM - 使用安全的音频播放函数避免死锁
+SafePlayBGM(oto[0]);
 //PlayMusic("BGM/titerman.mp3",DX_PLAYTYPE_LOOP) ;
 
 
@@ -1376,7 +1378,10 @@ if (mmutekitm>=-1)mmutekitm--;
 
 //HPがなくなったとき
 if (mhp<=0 && mhp>=-9){
-mkeytm=12;mhp=-20;mtype=200;mtm=0;ot(oto[12]);StopSoundMem(oto[0]);StopSoundMem(oto[11]);StopSoundMem(oto[16]);
+mkeytm=12;mhp=-20;mtype=200;mtm=0;ot(oto[12]);
+//StopSoundMem(oto[0]);
+//StopSoundMem(oto[11]);
+//StopSoundMem(oto[16]);
 }//mhp
 //if (mhp<=-10){
 if (mtype==200){
@@ -1395,7 +1400,9 @@ mtm++;
 
 mkeytm=2;
 md=-1500;
-if (mb<=-6000){blackx=1;blacktm=20;stc+=5;stagerr=0;StopSoundMem(oto[0]);mtm=0;mtype=0;mkeytm=-1;}
+if (mb<=-6000){blackx=1;blacktm=20;stc+=5;stagerr=0;
+  //StopSoundMem(oto[0]);
+  mtm=0;mtype=0;mkeytm=-1;}
 }//2
 
 //ジャンプ台アウト
@@ -1458,7 +1465,8 @@ mb=-80000000;
 mxtype=0;
 blackx=1;
 blacktm=20;
-stagerr=0;StopSoundMem(oto[0]);
+stagerr=0;
+//StopSoundMem(oto[0]);
 }}
 }//00
 
@@ -1611,7 +1619,7 @@ brockbreak(t);
 else if (ttype[t]==400){
 md=0;ta[t]=-8000000;ot(oto[13]);
 for (tt=0;tt<tmax;tt++){if (ttype[tt]!=7){ttype[tt]=800;}}
-StopSoundMem(oto[0]);
+//StopSoundMem(oto[0]);
 }
 
 //音符+
@@ -1708,7 +1716,8 @@ if (ttype[t]==140){
 if (mb>xx[9]-xx[0]*2-2000 && mb<xx[9]+xx[1]-xx[0]*2+2000 && ma+mnobia>xx[8]-400 && ma<xx[8]+xx[1]){
 ta[t]=-800000;//ot(oto[4]);
 sracttype[20]=1;sron[20]=1;
-StopSoundMem(oto[0]);mtype=301;mtm=0;ot(oto[16]);
+//StopSoundMem(oto[0]);
+mtype=301;mtm=0;ot(oto[16]);
 
 }}
 
@@ -2053,7 +2062,8 @@ scrollx=0;
 
 //クリア
 if (sxtype[t]==30){sa[t]=-80000000;md=0;
-StopSoundMem(oto[0]);mtype=302;mtm=0;ot(oto[16]);
+//StopSoundMem(oto[0]);
+  mtype=302;mtm=0;ot(oto[16]);
 }
 
 if (sxtype[t]!=3 && sxtype[t]!=4 && sxtype[t]!=10){sa[t]=-800000000;}
@@ -2083,7 +2093,10 @@ sa[t]=-800000000;
 if (stype[t]==105 && mzimen==0 && md>=0){ta[1]-=1000;ta[2]+=1000;sxtype[t]++;if (sxtype[t]>=3)sa[t]=-8000000;}
 
 
-if (stype[t]==300 && mtype==0 && mb<xx[9]+sd[t]+xx[0]-3000 && mhp>=1){StopSoundMem(oto[0]);mtype=300;mtm=0;ma=sa[t]-fx-2000;ot(oto[11]);}
+if (stype[t]==300 && mtype==0 && mb<xx[9]+sd[t]+xx[0]-3000 && mhp>=1)
+{
+  //StopSoundMem(oto[0]);
+  mtype=300;mtm=0;ma=sa[t]-fx-2000;ot(oto[11]);}
 
 //中間ゲート
 if (stype[t]==500 && mtype==0 && mhp>=1){
@@ -2475,7 +2488,13 @@ if (aa[t]-fx>=-8000 && aa[t]>=sa[tt]+2000 && aa[t]<=sa[tt]+3600 && axzimen[t]==1
 
 if (atm[t]==100){
 eyobi(aa[t]+1200-1200,ab[t]+3000-10*3000-1500,0,0,0,0,1000,10*3000-1200,4,20);
-if (mtype==300){mtype=0;StopSoundMem(oto[11]);bgmchange(oto[100]);PlaySoundMem(oto[0],DX_PLAYTYPE_LOOP);}
+if (mtype == 300) {
+    mtype = 0;
+    StopSoundMem(oto[11]);
+    bgmchange(oto[100]); // 假设这个函数里已经处理了 oto[0] 的赋值
+    // 同样，确保只在没播时触发 - 使用安全的音频播放函数
+    SafePlayBGM(oto[0]);
+}
 for (t1=0;t1<smax;t1++){if (stype[t1]==104)sa[t1]=-80000000;}
 }
 if (atm[t]==120){eyobi(aa[t]+1200-1200,ab[t]+3000-10*3000-1500,600,-1200,0,160,1000,10*3000-1200,4,240);amuki[t]=1;}
@@ -3171,16 +3190,22 @@ xx[1]=xx[2];if (ma>xx[1] && fzx<scrollx){xx[5]=ma-xx[1];ma=xx[1];fx+=xx[5];fzx+=
 
 
 //スタッフロール
-if (main==2){
+if (main==2){{
 maintm++;
 
 xx[7]=46;
 if (CheckHitKey(KEY_INPUT_1)==1){end();}
 if (CheckHitKey(KEY_INPUT_SPACE)==1){for (t=0;t<=xx[7];t+=1){xx[12+t]-=300;}}
 
-if (maintm<=1){
-maintm=2;bgmchange(oto[106]);PlaySoundMem(oto[0],DX_PLAYTYPE_LOOP);xx[10]=0;
-for (t=0;t<=xx[7];t+=1){xx[12+t]=980000;}
+if (maintm <= 1) {
+    maintm = 2;
+    bgmchange(oto[106]);
+    SafePlayBGM(oto[0]);
+    xx[10] = 0;
+    for (t = 0; t <= xx[7]; t += 1) {
+        xx[12 + t] = 980000;
+    }
+}
 //for (t=0;t<=xx[7];t+=2){xx[12+t]=46000;}
 xx[12]=460;
 xx[13]=540;xx[14]=590;
@@ -3213,7 +3238,7 @@ maintm++;
 
 if (fast==1)maintm+=2;
 if (maintm>=30){maintm=0;main=1;zxon=0;}
-}//if (main==10){
+}//if (main==10)
 
 
 //タイトル
@@ -3684,8 +3709,8 @@ if (sta==1 && stb==2 && stc==0){
 
 //マリ　地上　入れ
 //StopSoundMem(oto[0]);
+// 1. 先切换句柄（确保 oto[0] 已经指向了正确的 BGM 句柄）
 bgmchange(oto[100]);
-//PlaySoundMem(oto[0],DX_PLAYTYPE_LOOP) ;
 
 scrollx=0*100;
 //ma=3000;mb=3000;
@@ -3864,8 +3889,8 @@ if (sta==1 && stb==2 && stc==2){
 
 //マリ　地上　入れ
 //StopSoundMem(oto[0]);
+// 1. 先切换句柄（确保 oto[0] 已经指向了正确的 BGM 句柄）
 bgmchange(oto[100]);
-//PlaySoundMem(oto[0],DX_PLAYTYPE_LOOP) ;
 
 scrollx=900*100;
 ma=7500;mb=3000*9;
@@ -3926,8 +3951,8 @@ if (sta==1 && stb==3 && stc==6){stc=0;}
 if (sta==1 && stb==3 && stc==0){
 
 //StopSoundMem(oto[0]);
+// 1. 先切换句柄（确保 oto[0] 已经指向了正确的 BGM 句柄）
 bgmchange(oto[100]);
-//PlaySoundMem(oto[0],DX_PLAYTYPE_LOOP) ;
 
 scrollx=3900*100;
 //ma=3000;mb=3000;
@@ -4040,8 +4065,8 @@ if (sta==1 && stb==3 && stc==1){
 
 //マリ　地上　入れ
 //StopSoundMem(oto[0]);
+// 1. 先切换句柄（确保 oto[0] 已经指向了正确的 BGM 句柄）
 bgmchange(oto[103]);
-//PlaySoundMem(oto[0],DX_PLAYTYPE_LOOP) ;
 
 scrollx=0*100;
 ma=6000;mb=6000;
@@ -4143,8 +4168,8 @@ if (sta==1 && stb==4 && stc==0){
 
 //マリ　地上　入れ
 //StopSoundMem(oto[0]);
+// 1. 先切换句柄（确保 oto[0] 已经指向了正确的 BGM 句柄）
 bgmchange(oto[105]);
-//PlaySoundMem(oto[0],DX_PLAYTYPE_LOOP) ;
 
 scrollx=4400*100;
 ma=12000;mb=6000;
@@ -5305,19 +5330,18 @@ byte stagedatex[17][1001]={
     }
   }
 }
+}
 
-}//stagep
-
-//BGM変更
-void bgmchange(int x){
-StopSoundMem(oto[0]);
-oto[0]=0;
-oto[0]=x;
-}//bgmchange()
-
-
-
-
+void bgmchange(int x) {
+    // x 应该是已经加载好的句柄，比如 oto[100]
+    if (x != oto[0]) {
+        printf("--- 切换 BGM 句柄 ---%d\n",oto[0]);
+        SafeStopBGM(oto[0]); // 停止当前的
+        oto[0] = x;           // 只是把指针指过去，千万别在这里 Load！
+        SafePlayBGM(oto[0]);
+        printf("现在播放句柄: %d\n", oto[0]);
+    }
+}
 //ブロック出現
 
 void tyobi(int x,int y,int type){

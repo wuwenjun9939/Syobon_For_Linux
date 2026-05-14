@@ -621,9 +621,6 @@ static void *ALBufferPlayThreadFunction( void *argc )
 {
 	while( SoundSysData.PF.ProcessALBufferThreadEndRequest == FALSE )
 	{
-		// クリティカルセクションの取得
-		CRITICALSECTION_LOCK( &HandleManageArray[ DX_HANDLETYPE_SOUND ].CriticalSection ) ;
-
 		// 再生終了処理を行う
 		SoundReleaseInfo_Process() ;
 
@@ -647,9 +644,6 @@ static void *ALBufferPlayThreadFunction( void *argc )
 			CriticalSection_Unlock( &SoundSysData.PF.PlaySoundBufferCriticalSection ) ;
 		}
 
-		// クリティカルセクションの解放
-		CriticalSection_Unlock( &HandleManageArray[ DX_HANDLETYPE_SOUND ].CriticalSection ) ;
-
 		// 待ち
 		usleep( 1000 ) ;
 	}
@@ -662,9 +656,6 @@ static void *StreamSoundThreadFunction( void *argc )
 {
 	while( SoundSysData.PF.ProcessSoundThreadEndRequest == FALSE )
 	{
-		// クリティカルセクションの取得
-		CRITICALSECTION_LOCK( &HandleManageArray[ DX_HANDLETYPE_SOUND ].CriticalSection ) ;
-
 		// 停止待ちサウンドバッファリストに登録されているサウンドバッファを停止する
 		SoundBuffer_Apply_StopSoundBufferList() ;
 
@@ -679,9 +670,6 @@ static void *StreamSoundThreadFunction( void *argc )
 
 		// 再生しているサウンドハンドルに対する処理を行う
 		ProcessPlaySoundMemAll() ;
-
-		// クリティカルセクションの解放
-		CriticalSection_Unlock( &HandleManageArray[ DX_HANDLETYPE_SOUND ].CriticalSection ) ;
 
 
 		// クリティカルセクションの取得

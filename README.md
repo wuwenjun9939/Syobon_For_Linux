@@ -19,7 +19,6 @@
   - 修复了 `DxLibForLinux` 下 `GetJoypadInputState` 无法直接读取键盘方向键的 Bug。
   - 通过 `CheckHitKey` 手动同步状态，确保了原汁原味的按键体验。
 - **音频系统优化 (Audio Backend)**：
-  - 移除了 Linux 下不兼容的内存预解压设置 (`DX_SOUNDDATATYPE_MEMPRESS`)。
   - 统一了音频路径解析，修复了 BGM 无法播放的问题。
 
 ## 🚀 如何编译 (How to Build)
@@ -33,10 +32,9 @@ sudo apt-get update
 sudo apt-get install libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev libx11-dev
 ```
 ### 2、编译并运行
-```bash
-make
-./syobon
-```
+- **Linux用户**：运行`make`即可看到`syobon`程序，双击即可打开
+- **Windows用户**：请运行`gcc main.cpp`即可看到`test.exe`程序，双击即可打开
+- **其他系统**：目前不知道`make`能不能用（主要是没其他系统）但可尝试编译看看
 
 ## ⚠️ 已知缺陷 (Known Issues)
 
@@ -55,7 +53,7 @@ make rebuild
 - **F1**：返回标题界面
 ### 📜 致谢 (Credits)
 - Original Author: Chikuwa (ちくわ)
-- Library: [DxLibForLinux](https://github.com/dragoon2014/dxlib-for-linux)
+- Library: [dxlib-for-linux](https://github.com/dragoon2014/dxlib-for-linux)
 - Fixes: [wuwenjun9939](https://github.com/wuwenjun9939)
 
-注：本项目仅供学习与交流使用，请勿用于商业用途。
+# 注：本项目仅供学习与交流使用，请勿用于商业用途。
