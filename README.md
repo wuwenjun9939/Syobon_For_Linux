@@ -47,10 +47,11 @@ make rebuild
 ### 小插曲
 - **趣闻**: 在这个源码里面有一个`Microsoft AppLocale`，那个是原作者留给以前Windows（非日文系统）的小工具，专门用来解决日语乱码问题的，现在已经不需要了
 ## 操作说明：
-- **方向键**：移动 / 蹲下（按上键也可以跳）
+- **方向键**：移动 / 蹲下
 - **Z键**：跳跃
 - **O键**：自杀重来（如果你被困在里面）
 - **F1**：返回标题界面
+**备注**：按方向键`↑`跟`Z`是一样的效果
 ### 📜 致谢 (Credits)
 - Original Author: Chikuwa (ちくわ)
 - Library: [dxlib-for-linux](https://github.com/dragoon2014/dxlib-for-linux)
