@@ -51,7 +51,7 @@ make rebuild
 - **Z键**：跳跃
 - **O键**：自杀重来（如果你被困在里面）
 - **F1**：返回标题界面
-**备注**：按方向键`↑`跟`Z`是一样的效果
+- **备注**：按方向键`↑`跟`Z`是一样的效果
 ### 📜 致谢 (Credits)
 - Original Author: Chikuwa (ちくわ)
 - Library: [dxlib-for-linux](https://github.com/dragoon2014/dxlib-for-linux)
