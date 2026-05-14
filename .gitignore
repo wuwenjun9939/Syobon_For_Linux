@@ -11,3 +11,4 @@ syobon
 *.swp
 *.log
 test*
+.qoder/
