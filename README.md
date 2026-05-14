@@ -53,7 +53,7 @@ make rebuild
 - **F1**：返回标题界面
 - **备注**：按方向键`↑`跟`Z`是一样的效果
 ## 玩法：
-想必都知道`超级马里奥`这款经典游戏吧？这个可以说是坑爹版的
+想必都知道`超级马里奥（Super Mario）`这款经典游戏吧？这个可以说是坑爹版的
 ### 📜 致谢 (Credits)
 - Original Author: Chikuwa (ちくわ)
 - Library: [dxlib-for-linux](https://github.com/dragoon2014/dxlib-for-linux)
