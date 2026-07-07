@@ -1,3 +1,31 @@
+[New Thread 0x7ffff003a6c0 (LWP 83817)]
+[New Thread 0x7fffebfbc6c0 (LWP 83818)]
+[New Thread 0x7fffebf9b6c0 (LWP 83819)]
+[New Thread 0x7fffebf7a6c0 (LWP 83820)]
+DEBUG: DxLib_Init Success! Moving to loadg...
+
+Thread 1 "syobon" received signal SIGTERM, Terminated.
+Download failed: 无效的参数.  Continuing without source file ./nptl/../sysdeps/nptl/futex-internal.h.
+futex_wait (futex_word=0x555555ca15d8 <DxLib::SoundSysData+132856>, expected=2, private=0) at ../sysdeps/nptl/futex-internal.h:126
+⚠ warning: 126 ../sysdeps/nptl/futex-internal.h: 没有那个文件或目录
+(gdb) bt
+#0  futex_wait (futex_word=0x555555ca15d8 <DxLib::SoundSysData+132856>, expected=2, private=0) at ../sysdeps/nptl/futex-internal.h:126
+#1  __GI___lll_lock_wait (futex=futex@entry=0x555555ca15d8 <DxLib::SoundSysData+132856>, private=0) at ./nptl/lowlevellock.c:49
+#2  0x00007ffff72a7a34 in lll_mutex_lock_optimized (mutex=0x555555ca15d8 <DxLib::SoundSysData+132856>) at ./nptl/pthread_mutex_lock.c:48
+#3  ___pthread_mutex_lock (mutex=0x555555ca15d8 <DxLib::SoundSysData+132856>) at ./nptl/pthread_mutex_lock.c:87
+#4  0x00005555557386f1 in DxLib::CriticalSection_Lock (pCSection=<optimized out>, FilePath=FilePath@entry=0x5555558a16b8 "DxLibMake/Linux/DxSoundLinux.cpp",
+    LineNo=LineNo@entry=232) at DxLibMake/Linux/DxThreadLinux.cpp:390
+#5  0x000055555589b8b3 in DxLib::SoundBuffer_Add_PlaySoundBufferList (Buffer=0x7ffff4163570) at DxLibMake/Linux/DxSoundLinux.cpp:232
+#6  DxLib::SoundBuffer_Play_PF (Buffer=0x7ffff4163570, Loop=<optimized out>) at DxLibMake/Linux/DxSoundLinux.cpp:1299
+#7  0x000055555570c1c5 in DxLib::SoundBuffer_Play (Buffer=0x7ffff4163570, Loop=Loop@entry=0) at DxLibMake/DxSound.cpp:9300
+#8  0x0000555555713a2d in DxLib::PlaySoundMem (SoundHandle=203161606, PlayType=1, TopPositionFlag=1) at DxLibMake/DxSound.cpp:5303
+#9  0x0000555555573f0a in Mainprogram() ()
+#10 0x000055555557b7ed in actual_main(int, char**) ()
+#11 0x00007ffff722a601 in __libc_start_call_main (main=main@entry=0x55555555ecc0 <main>, argc=argc@entry=1, argv=argv@entry=0x7fffffffbda8)
+    at ../sysdeps/nptl/libc_start_call_main.h:59
+#12 0x00007ffff722a718 in __libc_start_main_impl (main=0x55555555ecc0 <main>, argc=1, argv=0x7fffffffbda8, init=<optimized out>, fini=<optimized out>,
+    rtld_fini=<optimized out>, stack_end=0x7fffffffbd98) at ../csu/libc-start.c:360
+#13 0x000055555555ed65 in _start ()
 //-----------------------------------------------------------------------------
 // 
 // 		ＤＸライブラリ		Linux用スレッド関係プログラム
@@ -8,7 +36,9 @@
 
 // ＤＸライブラリ作成時用定義
 #define DX_MAKE
-
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE 1
+#endif
 // インクルード ---------------------------------------------------------------
 #include "DxThreadLinux.h"
 #include "../DxMemory.h"
@@ -72,24 +102,30 @@ extern int Thread_Create( THREAD_INFO *pThreadInfo, void ( *pFunction )( THREAD_
 	pThreadInfo->pParam		= pParam ;
 
 	// ミューテックス属性の初期化
+	// ====== 完美的互斥锁初始化流程 ======
+
+	// 1. 初始化互斥锁属性
 	if( pthread_mutexattr_init( &pThreadInfo->Mutexattr ) != 0 )
 	{
 		goto ERR ;
 	}
-	pThreadInfo->Mutexaddr_valid = 1 ;
+	pThreadInfo->Mutexaddr_valid = 1 ; // 只要属性初始化了就标记
 
-	// 再帰ロック可能にする
+	// 2. 显式设置为【递归锁/可重入锁】，拒绝未定义行为
 	if( pthread_mutexattr_settype( &pThreadInfo->Mutexattr, PTHREAD_MUTEX_RECURSIVE ) != 0 )
 	{
 		goto ERR ;
 	}
 
-	// ミューテックスの作成
+	// 3. 有且仅有【一次】初始化真正的互斥锁
 	if( pthread_mutex_init( &pThreadInfo->Mutex, &pThreadInfo->Mutexattr ) != 0 )
 	{
 		goto ERR ;
 	}
 	pThreadInfo->Mutex_valid = 1 ;
+
+	// ===================================
+	// 后面直接接原作者的：// 条件変数の作成 ...
 
 	// 条件変数の作成
 	if( pthread_cond_init( &pThreadInfo->Cond, NULL ) != 0 )

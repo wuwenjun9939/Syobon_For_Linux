@@ -1,4 +1,7 @@
-﻿#include "DxLib.h"
+﻿#ifndef MAIN_H
+#define MAIN_H
+
+#include "DxLib.h"
 #include <stdio.h>
 #include <math.h>
 #include <string>
@@ -6,76 +9,50 @@ using namespace std;
 
 void loadg();
 
-//String 使用
+// 将冲突名字映射为别名
+int main_var = 100, maintm = 0;
 
-//プログラム中
-//main-10
-//タイトル-100
-int main=100,maintm=0;
+// ステージ
+int stagecolor = 0;
+int sta = 1, stb = 4, stc = 0;
 
-//ステージ
-int stagecolor=0;
-int sta=1,stb=4,stc=0;
+// クイック
+int fast = 1;
 
-//クイック
-int fast=1;
+// トラップ表示
+int trap = 1;
 
-//トラップ表示
-int trap=1;
+// 中间ゲート
+int tyuukan = 0;
 
-//中間ゲート
-int tyuukan=0;
+// スタッフロール
+int ending = 0;
 
+// ステージ読み込みループ(いじらない)
+int stagerr, stagepoint;
+int over = 0;
 
-//スタッフロール
-int ending=0;
+// ステージスイッチ
+int stageonoff = 0;
 
-
-//ステージ読み込みループ(いじらない)
-int stagerr,stagepoint;
-//オーバーフローさせる
-int over=0;
-
-//ステージスイッチ
-int stageonoff=0;
-
-
-//メインプログラム
+// メインプログラム
 void Mainprogram();
 void rpaint();
 int maint;
 
-
-//サブクラス
-//(ウエイト系
-void wait(int interval);
-void wait2(long stime, long etime,int FLAME_TIME);
-int rand(int Rand);
+// サブクラス
+void wait_func(int interval);
+void wait2_func(long stime, long etime, int FLAME_TIME);
+int rand(int Rand); // 如果 rand 还报冲突，可以在 fix.h 里加映射
 void end();
 
-//描画
+// 描画
 int color;
 void setfont(int a);
 void setcolor(int red, int green, int blue);
 void setc0();
 void setc1();
-void drawpixel(int a,int b);
-void drawline(int a,int b,int c,int d);
-void drawrect(int a,int b,int c,int d);
-void fillrect(int a,int b,int c,int d);
-void drawarc(int a,int b,int c,int d);
-void fillarc(int a,int b,int c,int d);
-int grap[161][8],mgrap[51];
-int loadimage(string b);
-int loadimage(int a,int x,int y,int r,int z);
-int mirror;
-void drawimage(int mx,int a,int b);
-void drawimage(int mx,int a,int b,int c,int d,int e,int f);
-void setre();
-void setre2();
-void setno();
-int oto[151];
-void ot(int x);void bgmchange(int x);
+void drawpixel(int a, int b);
 
 //文字
 void str(string c,int a,int b);
@@ -226,3 +203,4 @@ string xs[31];
 
 //タイマー測定
 long stime;
+#endif // MAIN_H

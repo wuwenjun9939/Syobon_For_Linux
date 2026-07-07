@@ -226,31 +226,16 @@ extern void SoundBuffer_Apply_StopSoundBufferList( void )
 }
 
 // 再生中サウンドバッファリストに指定のサウンドバッファを加える
-static void SoundBuffer_Add_PlaySoundBufferList( SOUNDBUFFER *Buffer )
+// 给外部安全调用的版本（会自己加锁）
+static void SoundBuffer_Sub_PlaySoundBufferList( SOUNDBUFFER *Buffer )
 {
-	// クリティカルセクションの取得
-	CRITICALSECTION_LOCK( &SoundSysData.PF.PlaySoundBufferCriticalSection ) ;
-
-	// リストに追加
-	if( Buffer->PF.PlaySoundBufferValid == FALSE )
-	{
-		Buffer->PF.PlaySoundBufferValid = TRUE ;
-
-		Buffer->PF.PlaySoundBufferPrev = NULL ;
-		Buffer->PF.PlaySoundBufferNext = SoundSysData.PF.PlaySoundBuffer ;
-		if( SoundSysData.PF.PlaySoundBuffer != NULL )
-		{
-			SoundSysData.PF.PlaySoundBuffer->PF.PlaySoundBufferPrev = Buffer ;
-		}
-		SoundSysData.PF.PlaySoundBuffer = Buffer ;
-	}
-
-	// クリティカルセクションの解放
-	CriticalSection_Unlock( &SoundSysData.PF.PlaySoundBufferCriticalSection ) ;
+    CriticalSection_Lock( &SoundSysData.PF.PlaySoundBufferCriticalSection ) ;
+    SoundBuffer_Sub_PlaySoundBufferList_Internal( Buffer ) ; // 调用内部实现
+    CriticalSection_Unlock( &SoundSysData.PF.PlaySoundBufferCriticalSection ) ;
 }
 
 // 再生中サウンドバッファリストから指定のサウンドバッファを外す
-static void SoundBuffer_Sub_PlaySoundBufferList( SOUNDBUFFER *Buffer )
+static void SoundBuffer_Sub_PlaySoundBufferList_Internal( SOUNDBUFFER *Buffer )
 {
 	// クリティカルセクションの取得
 	CRITICALSECTION_LOCK( &SoundSysData.PF.PlaySoundBufferCriticalSection ) ;
@@ -777,7 +762,7 @@ extern int InitializeSoundSystem_PF_Timing0( void )
 			pthread_attr_t attr ;
 			sched_param param ;
 			int returnCode ;
-
+			pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
 			pthread_attr_init( &attr ) ;
 			pthread_attr_setstacksize( &attr, 128 * 1024 ) ;
 
