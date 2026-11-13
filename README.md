@@ -25,11 +25,11 @@
 
 ### 1. 安装依赖 (Dependencies)
 
-确保你的系统已安装 `SDL2` 相关开发库（以 Ubuntu 为例）：
+确保你的系统已安装 `g++`、`SDL2`、`openAL`、`theora` 相关开发库（以 Ubuntu 为例）：
 
 ```bash
 sudo apt-get update
-sudo apt-get install libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev libx11-dev
+sudo apt-get install libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev libx11-dev g++ libopenal-dev libtheora-dev
 ```
 ### 2、编译并运行
 - **Linux用户**：运行`make`即可看到`syobon`程序，双击即可打开
