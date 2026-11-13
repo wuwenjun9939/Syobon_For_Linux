@@ -54,6 +54,8 @@ make rebuild
 - **备注**：按方向键`↑`跟`Z`是一样的效果
 ## 玩法：
 想必都知道`超级马里奥（Super Mario）`这款经典游戏吧？这个可以说是坑爹版的
+## 备注：
+此程序没有任何存档点，返回标题界面 = 重新打；本程序极易破防，请低血压患者尽情游玩，如果出现高血压症状请停止游玩本游戏并立即就医！！！
 ### 📜 致谢 (Credits)
 - Original Author: Chikuwa (ちくわ)
 - Library: [dxlib-for-linux](https://github.com/dragoon2014/dxlib-for-linux)
